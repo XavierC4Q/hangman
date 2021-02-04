@@ -1,0 +1,29 @@
+html {
+    background-color: #e7ecef;
+}
+
+#selections {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.letter-select {
+    width: 5rem;
+    height: 6rem;
+    padding: 0.8rem;
+    margin: 0.8rem;
+    color: #5a189a;
+    background-color: #ffdd00;
+    font-size: 3.2rem;
+    border: 0.3rem solid #030303;
+    cursor: pointer;
+}
+
+.letter-select[disabled] {
+    cursor: not-allowed;
+    color: #a2a2a2;
+    background-color: #f5f5f1;
+}
