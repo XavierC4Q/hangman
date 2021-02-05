@@ -29,15 +29,30 @@ html {
     width: 4rem;
     height: 3rem;
     margin: 0.4rem;
-    color: #5a189a;
-    background-color: #ffdd00;
+    color: #f4f4f4;
+    background-color: #030303;
     font-size: 1.6rem;
     border: 0.3rem solid #030303;
     cursor: pointer;
 }
 
+.letter-select:hover:not([disabled]) {
+    color: #030303;
+    background-color: #f4f4f4;
+}
+
 .letter-select[disabled] {
     cursor: not-allowed;
-    color: #a2a2a2;
-    background-color: #f5f5f1;
+}
+
+.correct, .incorrect {
+    color: #f4f4f4;
+}
+
+.correct {
+    background-color: green;
+}
+
+.incorrect {
+    background-color: red;
 }

@@ -18,10 +18,11 @@ class Game {
   }
 
   guess(letter) {
+    this.lettersUsed.push(letter);
     if (!this.word.includes(letter)) {
       this.incorrect += 1;
+      return false;
     } else {
-      this.lettersUsed.push(letter);
       this.word.split("").forEach((w, i) => {
         if (w === letter) {
           this.progress[i] = letter;
@@ -29,6 +30,7 @@ class Game {
           letterDisplay.innerText = w;
         }
       });
+      return true;
     }
   }
 
@@ -43,25 +45,24 @@ class Game {
 
 // INITIALIZE HANGMAN
 document.addEventListener("DOMContentLoaded", async () => {
+  const game = await initializeHangman();
+  createWordDisplay(game);
+  createLetterSelections(game);
+});
+
+async function initializeHangman() {
   const game = new Game();
   await game.init();
 
-  const wordDisplay = document.getElementById("word");
-  wordDisplay.append(...createWordDisplay(game));
-
-  const selections = document.getElementById("selections");
-  selections.append(...createLetterSelections(game));
-});
+  return game;
+}
 
 // WORD DISPLAY
-/**
- *
- * Going to need a way to tag these elements so they can be dynamically updated
- */
 function createWordDisplay(game) {
   const word = game.word;
+  const wordDisplay = document.getElementById("word");
 
-  return word.split("").map((w, i) => {
+  const wordFillers = word.split("").map((_, i) => {
     const letterDisplay = document.createElement("span");
     letterDisplay.id = `idx-${i}`;
     letterDisplay.className = "letter-display";
@@ -69,23 +70,50 @@ function createWordDisplay(game) {
 
     return letterDisplay;
   });
+
+  wordDisplay.append(...wordFillers);
 }
 
 // LETTER BUTTONS
 function createLetterSelections(game) {
+  const selections = document.getElementById("selections");
   const alphabet = [...Array(26)]
     .map((_, y) => String.fromCharCode(y + 65))
     .join("");
 
-  return alphabet.split("").map((letter) => {
+  const letterBtns = alphabet.split("").map((letter) => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "letter-select";
     btn.innerText = letter;
     btn.addEventListener("click", () => {
-      game.guess(letter);
+      const guessResult = game.guess(letter);
       btn.disabled = true;
+      if (guessResult) {
+        btn.className += " correct";
+      } else {
+        btn.className += " incorrect";
+      }
+      handleGameComplete(game);
     });
     return btn;
   });
+
+  selections.append(...letterBtns);
+}
+
+function handleGameComplete(game) {
+  const hasLost = game.hasLost();
+  const hasWon = game.hasWon();
+
+  if (hasLost || hasWon) {
+    game.complete = true;
+
+    let message = hasWon ? "YOU HAVE WON!" : "YOU HAVE LOST!";
+
+    const tryAgain = alert(message);
+
+    if (tryAgain) {
+    }
+  }
 }
