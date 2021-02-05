@@ -2,22 +2,36 @@ html {
     background-color: #e7ecef;
 }
 
+#word {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.letter-display {
+    width: 3rem;
+    height: 6rem;
+    font-size: 2.4rem;
+    text-align: center;
+}
+
 #selections {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     max-width: 1000px;
     margin: 0 auto;
 }
 
 .letter-select {
-    width: 5rem;
-    height: 6rem;
-    padding: 0.8rem;
-    margin: 0.8rem;
+    width: 4rem;
+    height: 3rem;
+    margin: 0.4rem;
     color: #5a189a;
     background-color: #ffdd00;
-    font-size: 3.2rem;
+    font-size: 1.6rem;
     border: 0.3rem solid #030303;
     cursor: pointer;
 }
