@@ -2,6 +2,11 @@ html {
     background-color: #e7ecef;
 }
 
+#hangman-container {
+    margin: 0 auto;
+    text-align: center;
+}
+
 #word {
     display: flex;
     justify-content: space-evenly;

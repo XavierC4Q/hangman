@@ -10,6 +10,7 @@ class Game {
       const res = await fetch("https://random-words-api.vercel.app/word");
       const data = await res.json();
       const word = data[0].word.toUpperCase();
+
       this.word = word;
       this.progress = word.split("").map(() => null);
     } catch (e) {
@@ -19,6 +20,7 @@ class Game {
 
   guess(letter) {
     this.lettersUsed.push(letter);
+
     if (!this.word.includes(letter)) {
       this.incorrect += 1;
       return false;
@@ -43,7 +45,6 @@ class Game {
   }
 }
 
-// INITIALIZE HANGMAN
 document.addEventListener("DOMContentLoaded", async () => {
   const game = await initializeHangman();
   createWordDisplay(game);
@@ -53,11 +54,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function initializeHangman() {
   const game = new Game();
   await game.init();
-
+  drawGallows();
   return game;
 }
 
-// WORD DISPLAY
+function drawGallows() {
+  const canvas = document.getElementById("hangman");
+  const c = canvas.getContext("2d");
+
+  c.clearRect(0, 0, canvas.width, canvas.height);
+  c.strokeStyle = "#030303";
+  c.lineWidth = 10;
+  c.beginPath();
+  c.moveTo(175, 225);
+  c.lineTo(5, 225);
+  c.moveTo(25, 225);
+  c.lineTo(25, 5);
+  c.lineTo(125, 5);
+  c.lineTo(125, 25);
+  c.stroke();
+}
+
 function createWordDisplay(game) {
   const word = game.word;
   const wordDisplay = document.getElementById("word");
@@ -74,7 +91,6 @@ function createWordDisplay(game) {
   wordDisplay.append(...wordFillers);
 }
 
-// LETTER BUTTONS
 function createLetterSelections(game) {
   const selections = document.getElementById("selections");
   const alphabet = [...Array(26)]
@@ -111,9 +127,24 @@ function handleGameComplete(game) {
 
     let message = hasWon ? "YOU HAVE WON!" : "YOU HAVE LOST!";
 
-    const tryAgain = alert(message);
+    setTimeout(async () => {
+      const tryAgain = confirm(message);
 
-    if (tryAgain) {
-    }
+      if (tryAgain) {
+        const newGame = await initializeHangman();
+        const wordDisplay = document.getElementById("word");
+        const selections = document.getElementById("selections");
+
+        while (wordDisplay.hasChildNodes()) {
+          wordDisplay.removeChild(wordDisplay.firstChild);
+        }
+
+        while (selections.hasChildNodes()) {
+          selections.removeChild(selections.firstChild);
+        }
+        createWordDisplay(newGame);
+        createLetterSelections(newGame);
+      }
+    }, 500);
   }
 }
