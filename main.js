@@ -109,6 +109,7 @@ function createLetterSelections(game) {
         btn.className += " correct";
       } else {
         btn.className += " incorrect";
+        drawHangman(game.incorrect);
       }
       handleGameComplete(game);
     });
@@ -116,6 +117,60 @@ function createLetterSelections(game) {
   });
 
   selections.append(...letterBtns);
+}
+
+function drawHangman(incorrectCount) {
+  const canvas = document.getElementById("hangman");
+  const context = canvas.getContext("2d");
+
+  const draws = ["head", "body", "rightArm", "leftArm", "rightLeg", "leftLeg"];
+
+  const bodyPart = draws[incorrectCount - 1];
+
+  switch (bodyPart) {
+    case "head":
+      context.lineWidth = 5;
+      context.beginPath();
+      context.arc(125, 50, 25, 0, Math.PI * 2, true);
+      context.closePath();
+      context.stroke();
+      break;
+
+    case "body":
+      context.beginPath();
+      context.moveTo(125, 75);
+      context.lineTo(125, 140);
+      context.stroke();
+      break;
+
+    case "rightArm":
+      context.beginPath();
+      context.moveTo(125, 85);
+      context.lineTo(60, 100);
+      context.stroke();
+      break;
+
+    case "leftArm":
+      context.beginPath();
+      context.moveTo(125, 85);
+      context.lineTo(185, 100);
+      context.stroke();
+      break;
+
+    case "rightLeg":
+      context.beginPath();
+      context.moveTo(125, 140);
+      context.lineTo(105, 190);
+      context.stroke();
+      break;
+
+    case "leftLeg":
+      context.beginPath();
+      context.moveTo(125, 140);
+      context.lineTo(150, 190);
+      context.stroke();
+      break;
+  }
 }
 
 function handleGameComplete(game) {
